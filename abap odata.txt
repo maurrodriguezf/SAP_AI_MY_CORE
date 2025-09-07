@@ -1,0 +1,20 @@
+DATA: ls_header   TYPE bapi2080_nothdri,
+      lt_return   TYPE TABLE OF bapiret2,
+      lv_notifnum TYPE bapi2080_nothdr-notif_no.
+
+ls_header-notif_type = 'M1'. "Tipo de notificación
+ls_header-short_text = 'Notificación creada vía BAPI'.
+
+CALL FUNCTION 'BAPI_ALM_NOTIF_CREATE'
+  EXPORTING
+    notifheader = ls_header
+  IMPORTING
+    notifheader_export = lv_notifnum
+  TABLES
+    return = lt_return.
+
+CALL FUNCTION 'BAPI_ALM_NOTIF_SAVE'
+  EXPORTING
+    notif_no = lv_notifnum
+  TABLES
+    return   = lt_return.
